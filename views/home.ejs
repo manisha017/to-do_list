@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+        integrity="sha512-PgQMlq+nqFLV4ylk1gwUOgm6CtIIXkKwaIHp/PAIWHzig/lKZSEGKEysh0TCVbHJXCLN7WetD8TFecIky75ZfQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="css/home.css">
+  
+</head>
+
+
+<body>
+    <!--container for app-->
+    <div id="app">
+
+        <!--header section of app-->
+        <div class="header"><i class="fas fa-clipboard-list" ></i>Todo List</div>
+
+        <!--form section to add new task-->
+        <div class="taskinput">
+            <form action="/addtask" method="POST" class="form">
+                <input type="text" maxlength="20" name="nameoftask" class="formelement" id="nameoftask" placeholder="Enter task name" required>
+                <input type="=text" maxlength="30" name="desoftask" class="formelement" id="desoftask" placeholder="Enter description" required>
+                <select name="catoftask" class="formelement" id="catoftask" required>
+                    <option selected disabled>Choose a category</option>
+                    <option value="personal">Personal</option>
+                    <option value="work">Work</option>
+                    <option value="school">School</option>
+                    <option value="cleaning">Cleaning</option>
+                    <option value="study">Study</option>
+                    <option value="coding">Coding</option>
+                    <option value="other">Other</option>
+                </select>
+                <input placeholder="DD-MM-YYYY" type="text" onfocus="(this.type = 'date')" name="duedate"  id="duedate" class="formelement" required>
+                <button type="submit" class="formbutton">Add task</button>
+            </form>
+        </div>
+
+        <!--showing the task that have been passed to the controller by the database-->
+        <% for(i of todo_task){%>
+            <div class="task">
+                <!--showing the icon according to the category of the task-->
+                <% if(i.catoftask=="school"){%>
+                    <i class="fas fa-chalkboard-teacher taskicon"></i>
+                <%}else if(i.catoftask=="cleaning"){%>
+                    <i class="fas fa-broom taskicon"></i>
+                <%}else if(i.catoftask=="coding"){%>
+                    <i class="fas fa-laptop-code taskicon"></i>
+                <%}else if(i.catoftask=="study"){%>
+                    <i class="fas fa-book taskicon"></i>
+                <%}else{%>
+                    <i class="fas fa-thumbtack taskicon"></i>
+                <%} %>
+                
+                <!--showing the information of the task-->
+                <div class="info">
+                    <div class="name">
+                        <p>name: <%= i.nameoftask %></p>
+                    </div>
+                    <div class="category">
+                        <p>category: <%= i.catoftask %></p>
+                    </div>
+                    <div class="description">
+                        <p>description: <%= i.desoftask %></p>
+                    </div>
+                    <div class="duedate">
+                        <%var date = new Date(i.duedate);%>
+                        <p>duedate: <%= date.toDateString() %></p>
+                    </div>
+                    
+                </div>
+                
+                <!--delete button for deleting the individual task-->
+                <div class="delete-button">
+                    <a href="/delete-task/?id=<%= i._id %>">
+                        <i class="fas fa-window-close"></i>
+                    </a>
+                </div>
+            </div>
+        <% } %>
+
+
+    </div>
+
+</body>
+
+</html>
